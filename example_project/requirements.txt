@@ -1,0 +1,8 @@
+streamlit==0.54.0
+spacy==2.2.3
+rouge==0.3.2
+gdown==3.10.1
+gensim==3.8.1
+requests==2.22.0
+bs4==0.0.1
+numpy==1.18.1
