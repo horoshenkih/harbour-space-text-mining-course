@@ -13,6 +13,7 @@ from gensim.models import Word2Vec
 import streamlit as st
 import requests
 import bs4
+import re
 
 
 nlp = spacy.load("en_core_web_lg", disable=["tagger", "ner", "parser"])
@@ -148,24 +149,24 @@ if __name__ == '__main__':
         st.title("TechCrunch sentence summarization demo")
         url = st.text_input("TechCrunch URL", "")
 
-        response = requests.get(url)
-        soup = bs4.BeautifulSoup(response.text, "html.parser")
-        items = soup.find("div", {"class": "article-content"}).findAll("p")
-
-        raw_html = "\n".join(map(str, items))
-        import re
-
-        def cleanhtml(raw_html):
+        @st.cache
+        def parse_techcrunch_url(url):
+            response = requests.get(url)
+            soup = bs4.BeautifulSoup(response.text, "html.parser")
+            items = soup.find("div", {"class": "article-content"}).findAll("p")
+            raw_html = "\n".join(map(str, items))
             cleanr = re.compile('<.*?>')
-            cleantext = re.sub(cleanr, '', raw_html)
-            return cleantext
+            clean_html = re.sub(cleanr, '', raw_html)
+            summary = summarizer(clean_html)
+            return summary, raw_html
 
-        summary = summarizer(cleanhtml(raw_html))
-        st.subheader('Summary')
-        st.write(summary)
+        if url:
+            summary, raw_html = parse_techcrunch_url(url)
+            st.subheader('Summary')
+            st.write(summary)
+            st.subheader('Article')
+            st.markdown(raw_html, unsafe_allow_html=True)
 
-        st.subheader('Article')
-        st.markdown(raw_html, unsafe_allow_html=True)
     else:
         # evaluate quality of summarizers
 
