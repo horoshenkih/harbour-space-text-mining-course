@@ -50,6 +50,7 @@ with open("pscp-reversed-graph.txt") as rg, open("pscp-categories.txt") as c, op
         texts += batch_texts
 
     # extract targets
+    train.write("arxiv_id\ttitle\tsummary\tis_cond_mat\tnum_refs\tnum_refs_same_category\n")
     for arxiv_id, paper_texts in zip(arxiv_ids, texts):
         title, summary = paper_texts
         category = arxiv_id2category[arxiv_id]
