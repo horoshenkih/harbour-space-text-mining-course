@@ -2,6 +2,7 @@ from argparse import ArgumentParser
 import json
 import os
 import sys
+import shutil
 import tempfile
 from nbconvert.nbconvertapp import NbConvertApp
 import re
@@ -23,8 +24,10 @@ class FakeSysArgv:
 def main():
     p = ArgumentParser()
     p.add_argument("ipynb_notebook_file")
+    p.add_argument("-o", "--out")
     args = p.parse_args()
-    with open(args.ipynb_notebook_file) as nb, tempfile.TemporaryDirectory() as tmpdir, FakeSysArgv():
+
+    with open(args.ipynb_notebook_file) as nb, FakeSysArgv(), tempfile.NamedTemporaryFile(suffix=".ipynb", mode="w") as out_nb:
         nb_content = json.load(nb)
         for i, cell in enumerate(nb_content["cells"]):
             nb_content["cells"][i].setdefault("metadata", {})
@@ -40,15 +43,19 @@ def main():
                     slide_type = m.group(1)
                     break
             nb_content["cells"][i]["metadata"]["slideshow"]["slide_type"] = slide_type
-        temp_nb = os.path.join(tmpdir, "slides.ipynb")
-        with open(temp_nb, "w") as out:
-            json.dump(nb_content, out)
+        json.dump(nb_content, out_nb)
+        out_nb.flush()
         converter = NbConvertApp()
-        converter.notebooks = [temp_nb]
+        converter.notebooks = [out_nb.name]
         converter.export_format = "slides"
-        converter.postprocessor_class = "serve"
+        if not args.out:
+            converter.postprocessor_class = "serve"
         converter.initialize()
         converter.convert_notebooks()
+
+        if args.out:
+            base = os.path.splitext(out_nb.name)[0]
+            shutil.copy(base + ".slides.html", args.out)
 
 
 if __name__ == '__main__':
