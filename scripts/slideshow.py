@@ -7,7 +7,6 @@ import tempfile
 from nbconvert.nbconvertapp import NbConvertApp
 import re
 
-DEFAULT_SLIDE_TYPE = "slide"
 PY_CODE_REGEX = re.compile(r'^#@slideshow (slide|subslide|fragment|skip|notes)\s*$')
 MARKDOWN_CODE_REGEX = re.compile(r'<!--@slideshow (slide|subslide|fragment|skip|notes)-->')
 
@@ -25,6 +24,7 @@ def main():
     p = ArgumentParser()
     p.add_argument("ipynb_notebook_file")
     p.add_argument("-o", "--out")
+    p.add_argument("-d", "--default-slide-type", default="skip")
     args = p.parse_args()
 
     with open(args.ipynb_notebook_file) as nb, FakeSysArgv(), tempfile.NamedTemporaryFile(suffix=".ipynb", mode="w") as out_nb:
@@ -36,7 +36,7 @@ def main():
                 regex = MARKDOWN_CODE_REGEX
             elif cell["cell_type"] == "code":
                 regex = PY_CODE_REGEX
-            slide_type = DEFAULT_SLIDE_TYPE
+            slide_type = args.default_slide_type
             for line in cell["source"]:
                 m = regex.match(line)
                 if m:
