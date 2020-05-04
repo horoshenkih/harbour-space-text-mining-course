@@ -1,3 +1,170 @@
+def demo_function_approximation(
+    num_functions=1,
+    default_transform="step",
+    seed=0,
+    figsize=(12, 6),
+    **init_weights
+):
+    # demo for lesson 6
+    from ipywidgets import interactive_output
+    import ipywidgets as widgets
+    import matplotlib.pyplot as plt
+    import numpy as np
+    np.random.seed(seed)
+
+    def f(transform, **kwargs):
+        """
+        kwargs is a dict with keys "w1", "w2", ..., "wK", "a1", "a2", ..., "aK", "b1", "b2", ..., "bK"
+        """
+        weights = {}
+        slopes = {}
+        biases = {}
+        for k, v in kwargs.items():
+            t = k[0]
+            idx = k[1:]
+            if t == "w":
+                weights[idx] = v
+            elif t == "a":
+                slopes[idx] = v
+            elif t == "b":
+                biases[idx] = v
+            else:
+                raise ValueError(k)
+        assert set(weights.keys()) == set(slopes.keys()) == set(biases.keys())
+
+        plt.figure(2, figsize=figsize)
+        N = 300
+        x = np.linspace(-1, 2, num=N)
+        true_values = np.cosh(x)
+        plt.plot(x, true_values)
+        if transform == "identity":
+            f = lambda x: x
+        elif transform == "step":
+            f = lambda x: np.heaviside(x, 1)
+        elif transform == "relu":
+            f = lambda x: np.maximum(x, 0)
+        else:
+            raise ValueError(transform)
+
+        approx_values = np.zeros(N)
+        for i in weights.keys():
+            w = weights[i]
+            a = slopes[i]
+            b = biases[i]
+            approx_values += w * f(a * x + b)
+
+        plt.plot(x, approx_values)
+        print("MSE:", np.mean((true_values - approx_values)**2))
+        plt.ylim(-1, 5)
+        plt.show()
+
+    ui_elements = []
+    kwargs = {}
+    for i in range(num_functions):
+        k = str(i+1)
+
+        wk = "w" + k
+        weights_range = widgets.FloatSlider(min=-5, max=5, step=0.1, value=init_weights.get(wk, 1), description=wk)
+        kwargs[wk] = weights_range
+
+        ak = "a" + k
+        slopes_range = widgets.FloatSlider(min=-20, max=20, step=0.1, value=init_weights.get(ak, 1), description=ak)
+        kwargs[ak] = slopes_range
+
+        bk = "b" + k
+        biases_range = widgets.FloatSlider(min=-10, max=10, step=0.1, value=init_weights.get(bk, 0), description=bk)
+        kwargs[bk] = biases_range
+
+        controls = [weights_range, slopes_range, biases_range]
+        ui_elements.append(widgets.HBox([widgets.Label("f"+k)] + controls))
+
+    transforms = widgets.Dropdown(options=["step", "relu", "identity"], description=r"transform", value=default_transform)
+    kwargs["transform"] = transforms
+
+    demo = interactive_output(f, kwargs)
+    return widgets.VBox([widgets.VBox(ui_elements), transforms, demo])
+
+
+def demo_gradient_descent(
+    f,
+    theta_0,
+    learning_rate,
+    theta_min=-2,
+    theta_max=2,
+    y_min=-1,
+    y_max=4,
+    eps=1e-5
+):
+    # demo for lesson 6
+    import numpy as np
+    import matplotlib.pyplot as plt
+    import ipywidgets as widgets
+    plt.ylim(y_min, y_max)
+
+    def grad(theta):
+        return (f(theta + eps) - f(theta - eps)) / (2 * eps)
+
+    out = widgets.Output()
+    PATH = [(theta_0, f(theta_0))]
+    THETA = np.linspace(theta_min, theta_max, 100)
+    F = [f(t) for t in THETA]
+
+    def step():
+        prev_theta, prev_f = PATH[-1]
+        theta = prev_theta - learning_rate * grad(prev_theta)
+        PATH.append((theta, f(theta)))
+
+    def visualize():
+        plt.ylim(y_min, y_max)
+        with out:
+            out.clear_output()
+            plt.plot(THETA, F)
+            for _i in PATH:
+                plt.plot(_i[0], _i[1], 'ro')
+            # visualize last point
+            last_theta, last_f = PATH[-1]
+            nabla_f = grad(last_theta)
+            step = -learning_rate * nabla_f
+            annot_theta = r"$\theta = {:.2f}$".format(last_theta)
+            annot_grad = r"$\nabla f(\theta) = {:.2f}$".format(nabla_f)
+            annot_step = r"$-\lambda \cdot \nabla f(\theta) = {:.2f}$".format(step)
+            # draw an arrow using plt.annotate
+            plt.annotate(
+                "",
+                xy=(last_theta+step, f(last_theta+step)),
+                xytext=(last_theta, last_f),
+                arrowprops=dict(
+                    arrowstyle="->",
+                    connectionstyle="angle,angleA=180,angleB=-90,rad=0",
+                    color="r",
+                )
+            )
+            # annotate step
+            plt.annotate(
+                annot_step,
+                (last_theta + 0.5 * step, last_f - 0.05 * (y_max - y_min)),
+                c="r",
+                ha="center"
+            )
+            plt.annotate(
+                annot_theta + "\n" + annot_grad,
+                (last_theta, last_f),
+                c="r"
+            )
+
+            plt.show()
+
+    button = widgets.Button(description="next step")
+    def update(b):
+        step()
+        visualize()
+
+    button.on_click(update)
+    visualize()
+
+    return widgets.VBox([button, out])
+
+
 def demo_computational_graph(
         connections,
         labels=None,
@@ -11,6 +178,7 @@ def demo_computational_graph(
         forward_idx=0,
         backward_idx=0
 ):
+    # demo for lessons 6, 7 (neural networks)
     # each connection is a tuple (src, dst, forward, backward)
     # labels is a dict with mapping (node, label)
     import matplotlib.pyplot as plt
