@@ -101,13 +101,3 @@ class Function:
             verdict = widgets.HTML("<br>".join([fail_message, "Answers on sample input-output pairs:",
                                                 tabulate(table, tablefmt='html', headers=["input", "output"])]))
         return widgets.VBox([description, sample, verdict])
-
-
-class colab_latex:
-    def __enter__(self):
-        url = "https://colab.research.google.com/static/mathjax/MathJax.js?config=default"
-
-        google.colab.output._publish.javascript(url=url)
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        pass

@@ -42,3 +42,12 @@ def calendar_table(
         '</tr><tr>'.join('<td>{}</td>'.format('</td><td>'.join(str(_) for _ in row)) for row in table)
     )
     return html
+
+
+class colab_latex:
+    def __enter__(self):
+        url = "https://colab.research.google.com/static/mathjax/MathJax.js?config=default"
+        google.colab.output._publish.javascript(url=url)
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        pass
