@@ -93,6 +93,7 @@ def demo_gradient_descent(
     theta_max=2,
     y_min=-1,
     y_max=4,
+    figsize=(12, 6),
     eps=1e-5
 ):
     # demo for lesson 6
@@ -100,6 +101,7 @@ def demo_gradient_descent(
     import matplotlib.pyplot as plt
     import ipywidgets as widgets
     plt.ylim(y_min, y_max)
+    plt.figure(figsize=figsize)
 
     def grad(theta):
         return (f(theta + eps) - f(theta - eps)) / (2 * eps)
