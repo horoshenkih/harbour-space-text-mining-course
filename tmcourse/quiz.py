@@ -29,4 +29,5 @@ def quiz_bumps():
         """))
         display(widgets.HTML("Choose the correct answer below"))
 
-    return Quiz(description, [1, 2, 3], 2)
+    q = Quiz(description, [1, 2, 3], 2)
+    q()
