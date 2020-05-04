@@ -1,6 +1,5 @@
 import ipywidgets as widgets
 import typing as tp
-from contextlib import contextmanager
 from copy import deepcopy
 from tabulate import tabulate
 
@@ -104,13 +103,12 @@ class Function:
         return widgets.VBox([description, sample, verdict])
 
 
-@contextmanager
-def colab_latex():
-    try:
+class colab_latex:
+    def __enter__(self):
         from google.colab.output._publish import javascript
         url = "https://colab.research.google.com/static/mathjax/MathJax.js?config=default"
 
         javascript(url=url)
-        yield
-    finally:
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
         pass
