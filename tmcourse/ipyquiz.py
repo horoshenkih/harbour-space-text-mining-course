@@ -1,5 +1,6 @@
 import ipywidgets as widgets
 import typing as tp
+from contextlib import contextmanager
 from copy import deepcopy
 from tabulate import tabulate
 
@@ -101,3 +102,15 @@ class Function:
             verdict = widgets.HTML("<br>".join([fail_message, "Answers on sample input-output pairs:",
                                                 tabulate(table, tablefmt='html', headers=["input", "output"])]))
         return widgets.VBox([description, sample, verdict])
+
+
+@contextmanager
+def colab_latex():
+    try:
+        from google.colab.output._publish import javascript
+        url = "https://colab.research.google.com/static/mathjax/MathJax.js?config=default"
+
+        javascript(url=url)
+        yield
+    finally:
+        pass
