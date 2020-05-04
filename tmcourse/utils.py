@@ -46,8 +46,9 @@ def calendar_table(
 
 class colab_latex:
     def __enter__(self):
+        from google.colab.output._publish import javascript
         url = "https://colab.research.google.com/static/mathjax/MathJax.js?config=default"
-        google.colab.output._publish.javascript(url=url)
+        javascript(url=url)
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         pass
