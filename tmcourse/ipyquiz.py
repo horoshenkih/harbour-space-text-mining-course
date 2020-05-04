@@ -3,8 +3,6 @@ import typing as tp
 from copy import deepcopy
 from tabulate import tabulate
 
-__all__ = ["Quiz", "Function", "colab_latex"]
-
 
 class Quiz:
     def __init__(
@@ -105,7 +103,7 @@ class Function:
         return widgets.VBox([description, sample, verdict])
 
 
-class colab_latex:
+class latex:
     def __enter__(self):
         from google.colab.output._publish import javascript
         url = "https://colab.research.google.com/static/mathjax/MathJax.js?config=default"
