@@ -2,6 +2,8 @@ from collections import defaultdict
 from datetime import timedelta, date, datetime
 import typing as tp
 
+from google.colab.output._publish import javascript
+
 
 def calendar_table(
         times: tp.List[tp.Union[date, datetime]],
@@ -46,7 +48,6 @@ def calendar_table(
 
 class colab_latex:
     def __enter__(self):
-        from google.colab.output._publish import javascript
         url = "https://colab.research.google.com/static/mathjax/MathJax.js?config=default"
         javascript(url=url)
 
