@@ -5,14 +5,22 @@ from tabulate import tabulate
 
 
 class Quiz:
-    def __init__(self, description: str, options: tp.List[tp.Any], answer: tp.Any):
+    def __init__(
+        self,
+        description: tp.Union[str, widgets.Output],
+        options: tp.List[tp.Any],
+        answer: tp.Any
+    ):
         assert answer in options, "answer is not in options"
         self._description = description
         self._options = options[:]
         self._answer = answer
 
     def __call__(self):
-        description = widgets.Label(value=self._description)
+        if type(self._description) == str:
+            description = widgets.Label(value=self._description)
+        else:
+            description = self._description
         choices = widgets.RadioButtons(
             options=self._options,
             disabled=False
