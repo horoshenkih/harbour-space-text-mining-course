@@ -2,6 +2,7 @@ from .ipyquiz import Quiz
 
 
 def quiz_bumps():
+    # lesson 6, quiz 1
     from IPython.display import display
     import ipywidgets as widgets
     import matplotlib.pyplot as plt
@@ -30,3 +31,28 @@ def quiz_bumps():
         display(widgets.HTML("Choose the correct answer below"))
 
     return Quiz(description, [1, 2, 3], 2)
+
+
+def quiz_derivative():
+    # lesson 6, quiz 2
+    import ipywidgets as widgets
+    from IPython.display import display
+
+    description = widgets.Output()
+    with description:
+        w = widgets.HTMLMath(
+            value=r"Consider the function $$\tilde h(x)=\sum\limits_{1 \leq k \leq K} w_k g(a_k x + b_k) + s_k$$")
+        display(w)
+
+    with description:
+        display(widgets.HTMLMath(r"What is the derivative $\dfrac{\partial \ell(y, \tilde h(x))}{\partial s_k}$?"))
+        display(widgets.HTMLMath(r"""
+            <ol>
+                <li>$\dfrac{\partial \ell(y, \tilde h(x))}{\partial s_k} = (y - \tilde h(x)) \cdot g(a_k x + b_k)$</li>
+                <li>$\dfrac{\partial \ell(y, \tilde h(x))}{\partial s_k} = w_k \cdot (y - \tilde h(x))$</li>
+                <li>$\dfrac{\partial \ell(y, \tilde h(x))}{\partial s_k} = y - \tilde h(x)$</li>
+            </ol>
+        """))
+        display(widgets.HTML("Choose the correct answer below"))
+
+    return Quiz(description, [1, 2, 3], 3)
