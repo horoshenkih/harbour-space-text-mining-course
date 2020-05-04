@@ -105,7 +105,7 @@ class Function:
 
 class latex:
     def __enter__(self):
-        from google.colab.output._publish import javascript
+        exec("from google.colab.output._publish import javascript")
         url = "https://colab.research.google.com/static/mathjax/MathJax.js?config=default"
 
         javascript(url=url)
