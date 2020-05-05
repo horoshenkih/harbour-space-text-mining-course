@@ -342,7 +342,7 @@ def demo_pytorch_computational_graph(
         init_gradient = torch.tensor(1.0)
 
     G_forward = nx.DiGraph()  # for layout
-    G = nx.DiGraph()
+    G = nx.MultiDiGraph()
     stack = [(t.grad_fn, t.grad_fn(init_gradient))]
     node_labels = {}
     while stack:
@@ -374,10 +374,22 @@ def demo_pytorch_computational_graph(
     # draw nodes
     nx.draw_networkx_nodes(G, node_color="#a2c4fc", pos=nodes_layout)
     nx.draw_networkx_labels(G, pos=nodes_layout, labels=node_labels)
-    edges_kwargs = dict(pos=nodes_layout, connectionstyle="arc3,rad=-0.1", width=2)
     # draw edges
-    nx.draw_networkx_edges(G, alpha=0.5, edge_color="r", **edges_kwargs)
     for e in G.edges:
         l = G.edges[e]["label"]
-        coords = tuple(0.5 * (np.array(nodes_layout[e[0]]) + np.array(nodes_layout[e[1]])))
+        current_multiplicity = e[2]
+        coords = tuple(0.5 * (np.array(nodes_layout[e[0]]) + np.array(nodes_layout[e[1]])) - 10 * current_multiplicity)
         plt.annotate(l, coords, color="r", ha='center')
+        # hacky arrows
+        plt.annotate(
+            "",
+            xy=nodes_layout[e[1]], xycoords='data',
+            xytext=nodes_layout[e[0]], textcoords='data',
+            arrowprops=dict(
+                arrowstyle="simple",
+                color="r",
+                alpha=0.5,
+                shrinkA=10, shrinkB=10,
+                connectionstyle="arc3,rad={}".format(-0.1*(1 + current_multiplicity))
+            ),
+        )
