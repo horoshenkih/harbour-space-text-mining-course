@@ -79,5 +79,6 @@ def quiz_derivative_pytorch():
         description,
         etalon_solution=solution,
         input_list=[[float(x)] for x in range(1, 20, 2)],
-        input_output_list=[]
+        input_output_list=[],
+        show_n_answers=2
     )
