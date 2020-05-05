@@ -72,7 +72,7 @@ def quiz_derivative_pytorch():
     description = widgets.Output()
 
     with description:
-        w = widgets.HTMLMath(r"Compute the derivative of $f(x) = x^x$ with PyTorch. Hint: use `torch.pow` function.")
+        w = widgets.HTMLMath(r"Compute the derivative of $f(x) = x^x$ with PyTorch. Hint: use torch.pow function.<hr>")
         display(w)
 
     return Function(
