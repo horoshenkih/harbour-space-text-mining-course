@@ -325,3 +325,59 @@ def demo_computational_graph(
     demo = widgets.interactive_output(visualize, kwargs)
 
     return widgets.VBox([widgets.HBox([labels, dec_buttons, sliders, inc_buttons]), demo])
+
+
+def demo_pytorch_computational_graph(
+    t,
+    init_gradient=None,
+    figsize=(12, 6),
+    padding=40
+):
+    import torch
+    import networkx as nx
+    import numpy as np
+    import matplotlib.pyplot as plt
+
+    if init_gradient is None:
+        init_gradient = torch.tensor(1.0)
+
+    G_forward = nx.DiGraph()  # for layout
+    G = nx.DiGraph()
+    stack = [(t.grad_fn, t.grad_fn(init_gradient))]
+    node_labels = {}
+    while stack:
+        node, outer_gradient = stack.pop()
+        node_id = str(id(node)) + node.name()
+        node_labels[node_id] = node.name()
+        for n, n_outer_gradient in zip(node.next_functions, outer_gradient):
+            if n[0] is not None:
+                n_id = str(id(n[0])) + n[0].name()
+                node_labels[n_id] = n[0].name()
+                G_forward.add_edge(n_id, node_id)
+                G.add_edge(node_id, n_id, label=n_outer_gradient.item())
+                stack.append((n[0], n[0](n_outer_gradient)))
+    # place nodes left-to-right
+    # "regular" top-to-bottom layout
+    nodes_layout = nx.nx_pydot.graphviz_layout(G_forward, prog='dot')
+    # make right-to-left from top-to-bottom
+    nodes_layout = {k: (-v[1], v[0]) for k, v in nodes_layout.items()}
+
+    # visualize
+    x_min = min([c[0] for c in nodes_layout.values()])
+    x_max = max([c[0] for c in nodes_layout.values()])
+    y_min = min([c[1] for c in nodes_layout.values()])
+    y_max = max([c[1] for c in nodes_layout.values()])
+
+    plt.figure(figsize=figsize)
+    plt.xlim(x_min - padding, x_max + padding)
+    plt.ylim(y_min - padding, y_max + padding)
+    # draw nodes
+    nx.draw_networkx_nodes(G, node_color="#a2c4fc", pos=nodes_layout)
+    nx.draw_networkx_labels(G, pos=nodes_layout, labels=node_labels)
+    edges_kwargs = dict(pos=nodes_layout, connectionstyle="arc3,rad=-0.1", width=2)
+    # draw edges
+    nx.draw_networkx_edges(G, alpha=0.5, edge_color="r", **edges_kwargs)
+    for e in G.edges:
+        l = G.edges[e]["label"]
+        coords = tuple(0.5 * (np.array(nodes_layout[e[0]]) + np.array(nodes_layout[e[1]])))
+        plt.annotate(l, coords, color="r", ha='center')
