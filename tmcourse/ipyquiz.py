@@ -41,7 +41,7 @@ class Quiz:
 class Function:
     def __init__(
             self,
-            description: str,
+            description: tp.Union[str, widgets.Output],
             etalon_solution: tp.Optional[tp.Callable],
             input_list=tp.Optional[tp.List[tp.List[tp.Any]]],
             input_output_list=tp.Optional[tp.List[tp.Tuple[tp.List[tp.Any], tp.Any]]],
@@ -79,7 +79,11 @@ class Function:
             len(self._input_output_list), self._show_n_answers)
 
     def __call__(self, solution: tp.Callable):
-        description = widgets.HTML(value=str(self._description) + "<hr>")
+        if type(self._description) == str:
+            description = widgets.HTML(value=str(self._description) + "<hr>")
+        else:
+            description = self._description
+
         sample_input_output = self._input_output_list[:self._show_n_answers]
         if len(sample_input_output):
             table = [(repr(i), repr(o)) for i, o in sample_input_output]

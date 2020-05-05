@@ -1,4 +1,4 @@
-from .ipyquiz import Quiz
+from .ipyquiz import Quiz, Function
 
 
 def quiz_bumps():
@@ -56,3 +56,28 @@ def quiz_derivative():
         display(widgets.HTML("Choose the correct answer below"))
 
     return Quiz(description, [1, 2, 3], 3)
+
+
+def quiz_derivative_pytorch():
+    from IPython.display import display
+
+    def solution(x):
+        import torch
+        x = torch.tensor(x, requires_grad=True)
+        z = torch.pow(x, x)
+        z.backward()
+        return x.grad.item()
+
+    import ipywidgets as widgets
+    description = widgets.Output()
+
+    with description:
+        w = widgets.HTMLMath(value=r"Compute the derivative of $f(x) = x^x$ with PyTorch.")
+        display(w)
+
+    return Function(
+        description,
+        etalon_solution=solution,
+        input_list=[[float(x)] for x in range(1, 20, 2)],
+        input_output_list=[]
+    )
