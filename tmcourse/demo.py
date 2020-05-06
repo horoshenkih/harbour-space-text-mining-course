@@ -182,6 +182,8 @@ def demo_computational_graph(
         backward_color="r",
         static=False,
         forward_idx=0,
+        scale_x=1.0,
+        scale_y=1.0,
         backward_idx=0
 ):
     # demo for lessons 6, 7 (neural networks)
@@ -217,6 +219,9 @@ def demo_computational_graph(
     nodes_layout = nx.nx_pydot.graphviz_layout(G_forward, prog='dot')
     # make left-to-right from top-to-bottom
     nodes_layout = {k: (-v[1], v[0]) for k, v in nodes_layout.items()}
+    for node, coords in nodes_layout.items():
+        x, y = coords
+        nodes_layout[node] = (x * scale_x, y * scale_y)
 
     # fill in node labels
     # by default, the node label is the node itself
