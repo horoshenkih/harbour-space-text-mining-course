@@ -52,23 +52,26 @@ def main():
                 regex = PY_CODE_REGEX
             slide_type = args.default_slide_type
             tags = []
-            for line in cell["source"]:
-                m = regex.match(line)
-                if m:
-                    slideshow_config = m.group(1)
-                    slideshow_config_items = slideshow_config.split()
-                    slide_type = slideshow_config_items[0]
-                    if slide_type not in ALLOWED_SLIDE_TYPES:
-                        raise ValueError("unknown slide type: {}".format(slide_type))
-                    # find tags in format "tags=tag1,tag2,..."
-                    for item in slideshow_config_items:
-                        if not item.startswith("tags="):
-                            continue
-                        item_tags = item[len("tags="):].split(",")
-                        for tag in item_tags:
-                            # add only new tags, just in case
-                            if tag not in cell["metadata"].get("tags", []):
-                                tags.append(tag)
+            # check the first line
+            if not cell["source"]:
+                continue
+            m = regex.match(cell["source"][0])
+            if m:
+                slideshow_config = m.group(1)
+                slideshow_config_items = slideshow_config.split()
+                slide_type = slideshow_config_items[0]
+                if slide_type not in ALLOWED_SLIDE_TYPES:
+                    raise ValueError("unknown slide type: {}".format(slide_type))
+                # find tags in format "tags=tag1,tag2,..."
+                for item in slideshow_config_items:
+                    if not item.startswith("tags="):
+                        continue
+                    item_tags = item[len("tags="):].split(",")
+                    for tag in item_tags:
+                        # add only new tags, just in case
+                        if tag not in cell["metadata"].get("tags", []):
+                            tags.append(tag)
+                nb_content["cells"][i]["source"] = cell["source"][1:]  # remove the first line
 
             nb_content["cells"][i]["metadata"]["slideshow"]["slide_type"] = slide_type
             nb_content["cells"][i]["metadata"]["tags"] += tags
