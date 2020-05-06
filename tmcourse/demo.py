@@ -398,3 +398,36 @@ def demo_pytorch_computational_graph(
                 connectionstyle="arc3,rad={}".format(-0.1*(1 + current_multiplicity))
             ),
         )
+
+
+def demo_2d_classification(f, title=None, show_zero=False):
+    # f(X, Y) is a 2d-function with the domain (-1, 1) for both X and Y
+    import matplotlib.pyplot as plt
+    import numpy as np
+    from numpy import ma
+    from matplotlib import ticker, cm
+
+    N = 100
+    x = np.linspace(-1.0, 1.0, N)
+    y = np.linspace(-1.0, 1.0, N)
+
+    X, Y = np.meshgrid(x, y)
+    z = f(X, Y)
+
+    # plot 3d
+    fig = plt.figure(figsize=(12, 10))
+    ax = plt.axes(projection='3d')
+    ax.plot_surface(X, Y, z, cmap=cm.coolwarm_r, alpha=0.7)
+    if show_zero:
+        ax.plot_wireframe(X, Y, 0*z, alpha=0.5, rcount=20, ccount=20)
+    cset = ax.contourf(X, Y, z, levels=30, cmap=cm.coolwarm_r, zdir="z", offset=-8)
+    cbar = fig.colorbar(cset)
+
+    ax.set_xlabel('X')
+    ax.set_ylabel('Y')
+    ax.set_zlabel('Z')
+    ax.set_zlim(-8, 2)
+    if title:
+        ax.set_title(title)
+
+    plt.show()
