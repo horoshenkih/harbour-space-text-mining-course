@@ -1,9 +1,10 @@
 def demo_function_approximation(
-    num_functions=1,
-    default_transform="step",
-    seed=0,
-    figsize=(12, 6),
-    **init_weights
+        num_functions=1,
+        default_transform="step",
+        seed=0,
+        figsize=(12, 6),
+        static=False,
+        **init_weights
 ):
     # demo for lesson 6
     from ipywidgets import interactive_output
@@ -57,6 +58,10 @@ def demo_function_approximation(
         print("MSE:", np.mean((true_values - approx_values)**2))
         plt.ylim(-1, 5)
         plt.show()
+
+    if static:
+        f(default_transform, **init_weights)
+        return
 
     ui_elements = []
     kwargs = {}
