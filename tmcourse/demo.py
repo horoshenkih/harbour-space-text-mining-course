@@ -181,6 +181,7 @@ def demo_computational_graph(
         forward_color="k",
         backward_color="r",
         static=False,
+        axis_equal=True,
         forward_idx=0,
         backward_idx=0
 ):
@@ -235,7 +236,8 @@ def demo_computational_graph(
         plt.figure(figsize=figsize)
         plt.xlim(x_min - padding, x_max + padding)
         plt.ylim(y_min - padding, y_max + padding)
-        plt.axis('equal')
+        if axis_equal:
+            plt.axis('equal')
         if title:
             plt.title(r"Computational graph for " + title, fontsize=font_size)
 
