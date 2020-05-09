@@ -6,7 +6,9 @@ import typing as tp
 def calendar_table(
         times: tp.List[tp.Union[date, datetime]],
         values: tp.List[tp.Any],
-        weights: tp.List[float]
+        weights: tp.List[float],
+        from_datetime: tp.Optional[tp.Union[date, datetime]] = None,
+        to_datetime: tp.Optional[tp.Union[date, datetime]] = None,
 ) -> str:
     table_data = defaultdict(dict)
     sorted_weights = list(sorted(weights))
@@ -18,6 +20,10 @@ def calendar_table(
     max_weight = sorted_weights[-margin]
     for tvw in zip(times, values, weights):
         dt, value, weight = tvw
+        if from_datetime is not None and dt < from_datetime:
+            continue
+        if to_datetime is not None and dt > to_datetime:
+            continue
         year, week, weekday = dt.isocalendar()
         if max_weight > min_weight:
             r = (weight - min_weight) / (max_weight - min_weight)
