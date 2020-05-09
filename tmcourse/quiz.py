@@ -23,6 +23,32 @@ def quiz_count_tokens():
     )
 
 
+def quiz_count_lemmas():
+    def etalon(s):
+        import spacy
+        nlp = spacy.load("en")
+        return len({t.lemma_ for t in nlp(s)})
+
+    return Function(
+        "Compute the number of unique lemmas in the input string",
+        etalon_solution=etalon,
+        input_list=[
+            ("Let it be, let it be",),
+            ("When I find myself in times of trouble, Mother Mary comes to me",),
+            ("Speaking words of wisdom, \"let it be\"",),
+            ("And in my hour of darkness, she is standing right in front of me",),
+            ("Speaking words of wisdom, \"let it be\"",),
+            ("Let it be, let it be",),
+            ("Let it be, let it be",),
+            ("Let it be, let it be",),
+            ("Whisper words of wisdom",),
+            ("Let it be",),
+        ],
+        input_output_list=[],
+        show_n_answers=2
+    )
+
+
 def quiz_bumps():
     # lesson 6, quiz 1
     from IPython.display import display
