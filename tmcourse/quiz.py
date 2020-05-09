@@ -1,6 +1,28 @@
 from .ipyquiz import Quiz, Function
 
 
+def quiz_count_tokens():
+    # lesson 1, quiz 1
+    def solution(s):
+        from spacy.lang.en import English
+        nlp = English()
+        return len(nlp(s))
+
+    return Function(
+        "Compute the number of tokens in an input string using spaCy.",
+        etalon_solution=solution,
+        input_list=[
+            ("This is a text.",),
+            ("Don't reinvent the wheel, use spaCy.",),
+            ("Easy-peasy lemon squeezy",),
+            ("Easy-peasy lemon squeezy.",),
+            ("Two sentences. With exclamation mark!",),
+        ],
+        input_output_list=[],
+        show_n_answers=2
+    )
+
+
 def quiz_bumps():
     # lesson 6, quiz 1
     from IPython.display import display
