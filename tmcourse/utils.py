@@ -50,7 +50,7 @@ def calendar_table(
     return html
 
 
-def visualize_word_counter(word_counter, start, title, shift=10):
+def visualize_term_counter(word_counter, start, title, shift=10):
     import matplotlib.pyplot as plt
     plt.rcParams.update({'font.size': 22})
 
