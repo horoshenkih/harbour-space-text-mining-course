@@ -48,3 +48,22 @@ def calendar_table(
         '</tr><tr>'.join('<td>{}</td>'.format('</td><td>'.join(str(_) for _ in row)) for row in table)
     )
     return html
+
+
+def visualize_word_counter(word_counter, start, title, shift=10):
+    import matplotlib.pyplot as plt
+    plt.rcParams.update({'font.size': 22})
+
+    plt.style.use('ggplot')
+    plt.figure(figsize=(12, 8))
+
+    ordered_word_count = word_counter.most_common()[start:start+shift]
+    x_pos = range(len(ordered_word_count))
+    words = [x[0] for x in reversed(ordered_word_count)]
+    counts = [x[1] for x in reversed(ordered_word_count)]
+    plt.barh(x_pos, counts, color="green")
+    plt.yticks(x_pos, words)
+    plt.ylabel("Lemma")
+    plt.xlabel("Frequency")
+    plt.title(title)
+    plt.show()
