@@ -24,6 +24,7 @@ def quiz_count_tokens():
 
 
 def quiz_count_lemmas():
+    # lesson 1, quiz 2
     def etalon(s):
         import spacy
         nlp = spacy.load("en")
@@ -43,6 +44,28 @@ def quiz_count_lemmas():
             ("Let it be, let it be",),
             ("Whisper words of wisdom",),
             ("Let it be",),
+        ],
+        input_output_list=[],
+        show_n_answers=2
+    )
+
+
+def quiz_ner():
+    # lesson 1, quiz 3
+    def etalon(s):
+        import spacy
+        nlp = spacy.load("en")
+        return set(ent.label_ for ent in nlp(s).ents)
+
+    return Function(
+        "Return the set of all named entity labels found in the text",
+        etalon_solution=etalon,
+        input_list=[
+            ("No named entities",),
+            ("London is the capital of Great Britain.",),
+            ("Donald Trump is the President of the U.S.",),
+            ("As funding slows in Boston, its early-stage market could shine",),
+            ("California turns to vote-by-mail to keep residents safe come November",),
         ],
         input_output_list=[],
         show_n_answers=2
