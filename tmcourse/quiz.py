@@ -187,6 +187,39 @@ def quiz_chain_rule():
     )
 
 
+def quiz_bigram_lm():
+    # lesson 2 quiz 3
+    import ipywidgets as widgets
+    from IPython.display import display
+
+    description = widgets.Output()
+
+    with description:
+        display(widgets.HTMLMath(value=r"""
+            Consider a bigram language model with the following probabilities:
+            <ul>
+                <li>$\Pr(\textrm{"am so"})$ = 0.0007</li>
+                <li>$\Pr(\textrm{"am very"})$ = 0.0009</li>
+                <li>$\Pr(\textrm{"am the"})$ = 0.0009</li>
+                <li>$\Pr(\textrm{"I am"})$ = 0.019</li>
+                <li>$\Pr(\textrm{"I"})$ = 0.16</li>
+                <li>$\Pr(\textrm{"am"})$ = 0.02</li>
+                <li>$\Pr(\textrm{"so"})$ = 0.04</li>
+            </ul>
+            Find $\Pr(\textrm{"I am so"})$
+        """))
+
+    return Quiz(
+        description,
+        [
+            "0.00076",
+            "0.000665",
+            "0.0003325",
+        ],
+        "0.000665"
+    )
+
+
 def quiz_bumps():
     # lesson 6, quiz 1
     from IPython.display import display
