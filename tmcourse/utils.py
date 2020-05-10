@@ -50,20 +50,52 @@ def calendar_table(
     return html
 
 
-def visualize_term_counter(word_counter, start, title, shift=10):
+def visualize_term_counter(term_counter, start, title, shift=10):
     import matplotlib.pyplot as plt
     plt.rcParams.update({'font.size': 22})
 
     plt.style.use('ggplot')
     plt.figure(figsize=(12, 8))
 
-    ordered_word_count = word_counter.most_common()[start:start+shift]
-    x_pos = range(len(ordered_word_count))
-    words = [x[0] for x in reversed(ordered_word_count)]
-    counts = [x[1] for x in reversed(ordered_word_count)]
+    ordered_term_count = term_counter.most_common()[start:start + shift]
+    x_pos = range(len(ordered_term_count))
+    words = [x[0] for x in reversed(ordered_term_count)]
+    counts = [x[1] for x in reversed(ordered_term_count)]
     plt.barh(x_pos, counts, color="green")
     plt.yticks(x_pos, words)
     plt.ylabel("Lemma")
     plt.xlabel("Frequency")
     plt.title(title)
     plt.show()
+
+
+def enable_mathjax_in_cell():
+    from IPython.display import HTML, display
+    # https://colab.research.google.com/gist/blois/cea02123a82a4dd40500b31c39dfcb23/mathjaxoutputs.ipynb#scrollTo=QTO5EXGMxaIj
+    display(HTML('''
+        <script src="https://www.gstatic.com/external_hosted/mathjax/latest/MathJax.js?config=TeX-AMS_HTML-full,Safe&delayStartupUntil=configured"></script>
+        <script>
+            (() => {
+            const mathjax = window.MathJax;
+            mathjax.Hub.Config({
+            'tex2jax': {
+                'inlineMath': [['$', '$'], ['\\(', '\\)']],
+                'displayMath': [['$$', '$$'], ['\\[', '\\]']],
+                'processEscapes': true,
+                'processEnvironments': true,
+                'skipTags': ['script', 'noscript', 'style', 'textarea', 'code'],
+                'displayAlign': 'center',
+            },
+            'HTML-CSS': {
+                'styles': {'.MathJax_Display': {'margin': 0}},
+                'linebreaks': {'automatic': true},
+                // Disable to prevent OTF font loading, which aren't part of our
+                // distribution.
+                'imageFont': null,
+            },
+            'messageStyle': 'none'
+            });
+            mathjax.Hub.Configured();
+        })();
+        </script>
+        '''))
