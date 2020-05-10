@@ -275,6 +275,32 @@ def quiz_perplexity():
     )
 
 
+def quiz_random_benchmark():
+    # lesson 2 quiz 6
+    import ipywidgets as widgets
+    from IPython.display import display
+
+    description = widgets.Output()
+
+    with description:
+        display(widgets.HTMLMath(value=r"""
+            Suppose that we compute accuracy on the dataset with 4 classes, and there is equal number of samples of each class.
+            (In other words, all classes are balanced.)
+            What is accuracy of "random" classifier, that predicts random category with probability 0.25?
+        """))
+
+    return Quiz(
+        description,
+        [
+            "0",
+            "0.0625",
+            "0.25",
+            "0.5",
+        ],
+        "0.25"
+    )
+
+
 def quiz_bumps():
     # lesson 6, quiz 1
     from IPython.display import display
