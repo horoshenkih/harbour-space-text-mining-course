@@ -245,6 +245,36 @@ def quiz_count_ngrams():
     )
 
 
+def quiz_perplexity():
+    # lesson 2 quiz 5
+    import ipywidgets as widgets
+    from IPython.display import display
+
+    description = widgets.Output()
+
+    with description:
+        display(widgets.HTMLMath(value=r"""
+            Consider a unigram language model with the following probabilities:
+            <ul>
+                <li>$\Pr(\textrm{"A"})$ = 0.5</li>
+                <li>$\Pr(\textrm{"B"})$ = 0.1</li>
+                <li>$\Pr(\textrm{"C"})$ = 0.25</li>
+            </ul>
+            Compute $\textrm{Perplexity}(\textrm{"AABCC"})$
+        """))
+
+    return Quiz(
+        description,
+        [
+            "3.64",
+            "0.27",
+            "640",
+            "0.0016",
+        ],
+        "3.64"
+    )
+
+
 def quiz_bumps():
     # lesson 6, quiz 1
     from IPython.display import display
