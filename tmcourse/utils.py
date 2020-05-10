@@ -99,3 +99,12 @@ def enable_mathjax_in_cell():
         })();
         </script>
         '''))
+
+
+def display_cv_results(clf):
+    from IPython.display import display
+    import pandas as pd
+    params = [k for k in clf.cv_results_.keys() if k.startswith("param_")]
+    df_cv_results = pd.DataFrame(clf.cv_results_).sort_values(by=['rank_test_score'])[["mean_test_score"] + params]
+    df_cv_results.reset_index(drop=True, inplace=True)
+    display(df_cv_results)
