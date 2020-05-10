@@ -142,6 +142,27 @@ def quiz_vectorizer_shape():
     )
 
 
+def quiz_conditional_probability():
+    # lesson 2 quiz 1
+    import ipywidgets as widgets
+    from IPython.display import display
+
+    description = widgets.Output()
+
+    with description:
+        display(widgets.HTML(value="Given Pr(AB) = 0.2, Pr(A) = 0.4, Pr(B) = 0.8, find Pr(A|B) and Pr(B|A)."))
+
+    return Quiz(
+        description,
+        [
+            "Pr(A|B) = 0.2, Pr(B|A) = 0.2",
+            "Pr(A|B) = 0.5, Pr(B|A) = 0.25",
+            "Pr(A|B) = 0.25, Pr(B|A) = 0.5",
+        ],
+        "Pr(A|B) = 0.25, Pr(B|A) = 0.5"
+    )
+
+
 def quiz_bumps():
     # lesson 6, quiz 1
     from IPython.display import display
