@@ -73,6 +73,7 @@ def quiz_ner():
 
 
 def quiz_tfidf():
+    # lesson 1, quiz 4
     import ipywidgets as widgets
     from IPython.display import display
 
@@ -87,6 +88,36 @@ def quiz_tfidf():
             value=r'''3. $d_3$ = "A lie can travel half way around the world while the truth is putting on its shoes."'''))
         display(widgets.HTMLMath(value=r'''Compute $$TFIDF(\mathrm{''If''}, d_1, D)$$'''))
     return Quiz(description, ["2.2", "0.81", "0.405", "1.5"], "0.405")
+
+
+def quiz_vectorizer_shape():
+    # lesson 1, quiz 6
+    import ipywidgets as widgets
+    from IPython.display import display, HTML
+
+    description = widgets.Output()
+
+    with description:
+        display(HTML("""
+            With the following code
+            <p style="font-family:'Lucida Console', monospace">data = ["one, two", "three, four"]</p>
+            <p style="font-family:'Lucida Console', monospace">vectorizer = TfidfVectorizer().fit(data)</p>
+            <p style="font-family:'Lucida Console', monospace">X = vectorizer.transform(data)</p>
+            What is the shape of X?
+        """))
+
+    return Quiz(
+        description,
+        [
+            "1 row, 4 columns",
+            "2 rows, 2 columns",
+            "2 rows, 4 columns",
+            "4 rows, 2 columns",
+            "4 rows, 1 column",
+        ]
+        ,
+        "2 rows, 4 columns"
+    )
 
 
 def quiz_bumps():
