@@ -1,3 +1,105 @@
+def demo_generate_text_ngram(language_model, prefix, seed=0):
+    # demo for lesson 2
+    import ipywidgets as widgets
+    from IPython.display import display, HTML, clear_output
+    from tabulate import tabulate
+    from itertools import islice
+    import numpy as np
+
+    np.random.seed(seed)
+    generated_text = prefix[:]
+    left_layout = widgets.Layout(width="25%")
+
+    def split_head_tail(tokens, n):
+        tail = tokens[-(n-1):]
+        head = tokens[:-len(tail)]
+        return head, tail
+
+    def tokens_window_html(tokens, n):
+        head, tail = split_head_tail(tokens, n)
+        return " ".join(head) + " " + "<span style='border: 2px solid green;'>" + " ".join(tail) + "</span>"
+
+    def get_token_probabilities(language_model, prefix):
+        all_tokens = list(language_model.vocab)
+        all_token_probabilities = np.array([language_model.predict_token_probability(generated_text, token) for token in all_tokens])
+        return zip(all_tokens, all_token_probabilities)
+
+    def get_prefix_count(language_model, prefix):
+        n = language_model.n
+        _, tail = split_head_tail([None for _ in range(n-1)] + prefix, n)
+        return language_model.nm1_grams_counter[tuple(tail)]
+
+    def generate_next_token(language_model, prefix):
+        tokens, probs = zip(*get_token_probabilities(language_model, prefix))
+        return np.random.choice(tokens, size=1, p=probs)[0]
+
+    def update_widgets(
+        language_model,
+        generated_text,
+        widget_text_with_sliding_window,
+        widget_probabilities_table,
+        widget_current_window_count
+    ):
+        n = language_model.n
+        token_probabilities = get_token_probabilities(language_model, generated_text)
+        with widget_text_with_sliding_window:
+            clear_output()
+            display(HTML(tokens_window_html(generated_text, n)))
+        with widget_probabilities_table:
+            clear_output()
+            table = [t_p for t_p in islice(sorted(token_probabilities, key=lambda t_p: -t_p[1]), 0, 10)]
+            table_html = tabulate(table, ["token", "probability"], tablefmt="html")
+            table_html = table_html.replace("<table>", "<table style='width:100%;border:1px solid'>")
+            display(HTML(table_html))
+        with widget_current_window_count:
+            clear_output()
+            _, tail = split_head_tail(generated_text, language_model.n)
+            cnt = get_prefix_count(language_model, generated_text)
+            print("count(\"{}\") = {}".format(" ".join(tail), cnt))
+
+    widget_button = widgets.Button(description="generate next token")
+    widget_probabilities_table = widgets.Output(layout=left_layout)
+    widget_text_with_sliding_window = widgets.Output()
+    widget_current_window_count = widgets.Output()
+
+    def on_button_clicked(b):
+        nonlocal generated_text
+        nonlocal language_model
+        next_token = generate_next_token(language_model, generated_text)
+        if next_token is None:
+            with widget_probabilities_table:
+                clear_output()
+            with widget_text_with_sliding_window:
+                clear_output()
+                display(HTML("<font color='green'>" + " ".join(generated_text) + "</font>"))
+            with widget_current_window_count:
+                clear_output()
+        else:
+            generated_text += [next_token]
+            update_widgets(
+                language_model,
+                generated_text,
+                widget_text_with_sliding_window,
+                widget_probabilities_table,
+                widget_current_window_count
+            )
+    widget_button.on_click(on_button_clicked)
+
+    display(
+        widgets.HBox([
+            widgets.VBox([widget_button, widget_probabilities_table], layout=left_layout),
+            widgets.VBox([widget_text_with_sliding_window, widget_current_window_count])
+        ])
+    )
+    update_widgets(
+        language_model,
+        generated_text,
+        widget_text_with_sliding_window,
+        widget_probabilities_table,
+        widget_current_window_count
+    )
+
+
 def demo_function_approximation(
         num_functions=1,
         default_transform="step",
