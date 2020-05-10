@@ -163,6 +163,30 @@ def quiz_conditional_probability():
     )
 
 
+def quiz_chain_rule():
+    # lesson 2 quiz 2
+    import ipywidgets as widgets
+    from IPython.display import display
+
+    description = widgets.Output()
+
+    with description:
+        display(widgets.HTML(
+            value="Given Pr(C) = 0.5, Pr(B|C) = 0.3, Pr(A|C) = 0.8, Pr(B|AC) = 0.25, Pr(C|AB) = 0.5, find P(ABC)."))
+
+    return Quiz(
+        description,
+        [
+            "0.1",
+            "0.2",
+            "0.3",
+            "0.5",
+            "Not enough data"
+        ],
+        "0.1"
+    )
+
+
 def quiz_bumps():
     # lesson 6, quiz 1
     from IPython.display import display
