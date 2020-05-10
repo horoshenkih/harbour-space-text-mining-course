@@ -220,6 +220,31 @@ def quiz_bigram_lm():
     )
 
 
+def quiz_count_ngrams():
+    # lesson 2 quiz 4
+    import ipywidgets as widgets
+    from IPython.display import display
+
+    description = widgets.Output()
+
+    with description:
+        display(widgets.HTMLMath(value=r"""
+            Given the vocabulary $V$, what is the number of all possible $n$-grams constructed from $V$?
+            Assume there is no padding.
+        """))
+
+    return Quiz(
+        description,
+        [
+            r"$|V|$",
+            r"$n + |V|$",
+            r"$n\cdot|V|$",
+            r"$|V|^n$",
+        ],
+        r"$|V|^n$"
+    )
+
+
 def quiz_bumps():
     # lesson 6, quiz 1
     from IPython.display import display
