@@ -90,6 +90,28 @@ def quiz_tfidf():
     return Quiz(description, ["2.2", "0.81", "0.405", "1.5"], "0.405")
 
 
+def quiz_vector_distance():
+    # lesson 1, quiz 5
+    import ipywidgets as widgets
+    from IPython.display import display
+
+    description = widgets.Output()
+
+    with description:
+        display(widgets.HTMLMath(value=r"Consider the following set of vectors"))
+        display(widgets.HTMLMath(value=r"$$\mathbb{a} = (0.5, 0.5)$$"))
+        display(widgets.HTMLMath(value=r"$$\mathbb{b} = (0.4, 0.8)$$"))
+        display(widgets.HTMLMath(value=r"$$\mathbb{c} = (0, 0.5)$$"))
+
+        display(widgets.HTMLMath(value=r"Which one is the closest to $\mathbb{w} = (1, 0)$?"))
+
+    return Quiz(
+        description,
+        ["a", "b", "c"],
+        "a"
+    )
+
+
 def quiz_vectorizer_shape():
     # lesson 1, quiz 6
     import ipywidgets as widgets
