@@ -301,6 +301,36 @@ def quiz_random_benchmark():
     )
 
 
+def quiz_pipeline_parameter():
+    # lesson 2, quiz 7
+    import ipywidgets as widgets
+    from IPython.display import display, HTML
+
+    description = widgets.Output()
+
+    with description:
+        display(HTML("""
+            Consider the following pipeline of <span style="font-family:'Lucida Console', monospace">TfidfVectorizer</span> and <span style="font-family:'Lucida Console', monospace">SGDClassifier</span>:
+            <p style="font-family:'Lucida Console', monospace">pipeline = Pipeline([</p>
+            <p style="font-family:'Lucida Console', monospace">&nbsp;&nbsp;&nbsp;&nbsp;("vectorizer", TfidfVectorizer()),</p>
+            <p style="font-family:'Lucida Console', monospace">&nbsp;&nbsp;&nbsp;&nbsp;("clf", SGDClassifier()),</p>
+            <p style="font-family:'Lucida Console', monospace">])</p>
+            Which parameter of <span style="font-family:'Lucida Console', monospace">pipeline</span> corresponds to the parameter <span style="font-family:'Lucida Console', monospace">"max_features"</span> of <span style="font-family:'Lucida Console', monospace">TfidfVectorizer</span>?
+        """))
+
+    return Quiz(
+        description,
+        [
+            "max_features",
+            "vec__max_features",
+            "vectorizer__max_features",
+            "clf__max_features",
+        ]
+        ,
+        "vectorizer__max_features"
+    )
+
+
 def quiz_bumps():
     # lesson 6, quiz 1
     from IPython.display import display
