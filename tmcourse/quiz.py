@@ -72,6 +72,23 @@ def quiz_ner():
     )
 
 
+def quiz_tfidf():
+    import ipywidgets as widgets
+    from IPython.display import display
+
+    description = widgets.Output()
+
+    with description:
+        display(widgets.HTMLMath(value=r"Consider the collection $D$ containing 3 documents"))
+        display(widgets.HTMLMath(value=r'''1. $d_1$ = "If you tell the truth you don't have to remember anything."'''))
+        display(widgets.HTMLMath(
+            value=r'''2. $d_2$ = "If you don't read the newspaper, you're uninformed. If you read the newspaper, you're misinformed."'''))
+        display(widgets.HTMLMath(
+            value=r'''3. $d_3$ = "A lie can travel half way around the world while the truth is putting on its shoes."'''))
+        display(widgets.HTMLMath(value=r'''Compute $$TFIDF(\mathrm{''If''}, d_1, D)$$'''))
+    return Quiz(description, ["2.2", "0.81", "0.405", "1.5"], "0.405")
+
+
 def quiz_bumps():
     # lesson 6, quiz 1
     from IPython.display import display
