@@ -114,7 +114,7 @@ def demo_kmeans(
     import matplotlib.pyplot as plt
     import numpy as np
     from sklearn.metrics import pairwise_distances_argmin
-    from sklearn.datasets.samples_generator import make_blobs
+    from sklearn.datasets import make_blobs
     from IPython.display import display, HTML
     import warnings
     warnings.filterwarnings('ignore')
