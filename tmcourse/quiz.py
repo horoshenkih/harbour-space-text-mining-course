@@ -331,6 +331,47 @@ def quiz_pipeline_parameter():
     )
 
 
+def quiz_kmeans():
+    # lecture 3, quiz 1
+    import ipywidgets as widgets
+    from IPython.display import display
+
+    description = widgets.Output()
+    with description:
+        display(widgets.HTMLMath(value=r"""
+            Suppose you run $k$-means algorithm on 4 points:
+            <ul>
+                <li>$x_1 = (3, 1)$</li>
+                <li>$x_2 = (4, 2)$</li>
+                <li>$x_3 = (3, 3)$</li>
+                <li>$x_4 = (6, 2)$</li>
+            </ul>
+            with initial cluster centers
+            <ul>
+                <li>$c_1 = (0, 2)$</li>
+                <li>$c_2 = (7, 2)$</li>
+            </ul>
+        """))
+        display(widgets.HTMLMath(value=r"Compute clusters and new coordinates of $c_1$ and $c_2$ after one full iteration, i.e. after one E-step and one M-step."))
+        display(widgets.HTMLMath(value=r"""
+            Options:
+            <ol>
+                <li>cluster 1: $x_1$ and $x_3$; cluster 2: $x_2$ and $x_4$; $c_1 = (0, 2)$; $c_2 = (7, 2)$</li>
+                <li>cluster 1: $x_1$ and $x_3$; cluster 2: $x_2$ and $x_4$; $c_1 = (3, 2)$; $c_2 = (5, 2)$</li>
+                <li>cluster 1: $x_1$ and $x_2$; cluster 2: $x_3$ and $x_4$; $c_1 = (0, 2)$; $c_2 = (7, 2)$</li>
+                <li>cluster 1: $x_1$ and $x_2$; cluster 2: $x_3$ and $x_4$; $c_1 = (3, 2)$; $c_2 = (5, 2)$</li>
+            </ol>
+        """))
+        display(widgets.HTML("Choose the correct answer below."))
+        display(widgets.HTML("<b>Hint</b>: draw a picture."))
+
+    return Quiz(
+        description,
+        ["option 1", "option 2", "option 3", "option 4"],
+        "option 2"
+    )
+
+
 def quiz_bumps():
     # lesson 6, quiz 1
     from IPython.display import display
