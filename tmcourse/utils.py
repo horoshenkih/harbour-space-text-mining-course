@@ -120,3 +120,15 @@ def display_token_importance(token_importances):
         color = "rgba(0, 0, 255, {})".format(0.8 * r + 0.2)
         html_tokens.append("<span style='color:{}'>{}</span>".format(color, token))
     display(HTML(" ".join(html_tokens)))
+
+
+def plot_confusion_matrix(target, prediction, normalize=None):
+    import seaborn as sns; sns.set()  # for plot styling
+    import matplotlib.pyplot as plt
+    from sklearn.metrics import confusion_matrix
+
+    mat = confusion_matrix(target, prediction, normalize=normalize)
+    fmt = ".2f" if normalize else "d"
+    sns.heatmap(mat, square=True, annot=True, fmt=fmt, cbar=False, cmap="coolwarm")
+    plt.ylabel('true label')
+    plt.xlabel('predicted label')
