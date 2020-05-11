@@ -372,6 +372,33 @@ def quiz_kmeans():
     )
 
 
+def quiz_estimate_clustering_quality():
+    # lecture 3, quiz 2
+    import ipywidgets as widgets
+    from IPython.display import display
+    from tabulate import tabulate
+
+    description = widgets.Output()
+    with description:
+        display(widgets.HTMLMath(value=r"""
+            Suppose you have 4 points with the following true labels and clusters:
+        """))
+        table = [
+            ("$x_1$", "1", "2"),
+            ("$x_2$", "1", "2"),
+            ("$x_3$", "2", "1"),
+            ("$x_4$", "1", "1"),
+        ]
+        display(widgets.HTMLMath(value=tabulate(table, headers=("point", "label", "cluster"), tablefmt="html")))
+        display(widgets.HTML("What is the clustering quality according to the definition above?"))
+
+    return Quiz(
+        description,
+        ["0", "0.25", "0.5", "0.75"],
+        "0.5"
+    )
+
+
 def quiz_bumps():
     # lesson 6, quiz 1
     from IPython.display import display
