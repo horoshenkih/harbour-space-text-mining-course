@@ -100,6 +100,107 @@ def demo_generate_text_ngram(language_model, prefix, seed=0):
     )
 
 
+def demo_kmeans(
+        num_samples=300,
+        num_centers=4,
+        clusters_random_state=0,
+        k=4,
+        kmeans_random_state=2,
+        cluster_std=0.6,
+        figsize=(8, 8),
+):
+    # demo for lesson 3
+    import ipywidgets as widgets
+    import matplotlib.pyplot as plt
+    import numpy as np
+    from sklearn.metrics import pairwise_distances_argmin
+    from sklearn.datasets.samples_generator import make_blobs
+    from IPython.display import display, HTML
+    import warnings
+    warnings.filterwarnings('ignore')
+
+    X, y = make_blobs(
+        n_samples=num_samples,
+        centers=num_centers,
+        random_state=clusters_random_state,
+        cluster_std=cluster_std
+    )
+    x_min = np.min(X[:, 0])
+    x_max = np.max(X[:, 0])
+    y_min = np.min(X[:, 1])
+    y_max = np.max(X[:, 1])
+    rng = np.random.RandomState(kmeans_random_state)
+    labels = np.zeros(X.shape[0])
+    centers = rng.rand(k, 2)
+    # scale centers
+    centers[:, 0] *= (x_max - x_min)
+    centers[:, 0] += x_min
+    centers[:, 1] *= (y_max - y_min)
+    centers[:, 1] += y_min
+
+    def plot_points(X, labels):
+        plt.scatter(X[:, 0], X[:, 1], c=labels, s=50, cmap='viridis',
+                    vmin=0, vmax=k - 1);
+
+    def plot_centers(centers):
+        plt.scatter(centers[:, 0], centers[:, 1], marker='o',
+                    c=np.arange(centers.shape[0]),
+                    s=200, cmap='viridis')
+        plt.scatter(centers[:, 0], centers[:, 1], marker='o',
+                    c='black', s=50)
+
+    CURRENT_STEP = 0
+
+    out = widgets.Output()
+    out_next_step = widgets.Output()
+
+    def step():
+        nonlocal CURRENT_STEP
+        nonlocal labels
+        nonlocal centers
+        if CURRENT_STEP % 2 == 0:
+            # expectation
+            labels = pairwise_distances_argmin(X, centers)
+        else:
+            # maximization
+            old_centers = centers
+            centers = np.array([X[labels == j].mean(0) for j in range(k)])
+            nans = np.isnan(centers)
+            centers[nans] = old_centers[nans]
+        CURRENT_STEP += 1
+
+    def visualize():
+        plt.figure(figsize=figsize)
+        plt.xlim(x_min, x_max)
+        plt.ylim(y_min, y_max)
+        with out:
+            out.clear_output()
+            plt.axis("equal")
+            if CURRENT_STEP == 0:
+                plt.scatter(X[:, 0], X[:, 1], s=50)
+            else:
+                plot_points(X, labels)
+            plot_centers(centers)
+            plt.show()
+        with out_next_step:
+            out_next_step.clear_output()
+            if CURRENT_STEP % 2 == 0:
+                display(HTML("next step: re-assign labels (E-step)"))
+            else:
+                display(HTML("next step: update centroids (M-step)"))
+
+    button = widgets.Button(description="update")
+
+    def update(b):
+        step()
+        visualize()
+
+    button.on_click(update)
+    visualize()
+
+    return widgets.VBox([out_next_step, button, out])
+
+
 def demo_function_approximation(
         num_functions=1,
         default_transform="step",
