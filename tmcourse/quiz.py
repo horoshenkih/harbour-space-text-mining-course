@@ -483,6 +483,32 @@ def quiz_nmf():
     )
 
 
+def quiz_coherence():
+    # lecture 3, quiz 4
+    import ipywidgets as widgets
+    from IPython.display import display
+
+    description = widgets.Output()
+    with description:
+        display(widgets.HTMLMath(value=r"""
+            Consider three words $A$, $B$, $C$ that occur with probabilities
+            $$
+            \Pr(A) = \frac{1}{2}, \Pr(B) = \frac{1}{4}, \Pr(C) = \frac{1}{2}
+            $$
+            and co-occur with probabilities
+            $$
+            \Pr(A, B) = \frac{1}{4}, \Pr(B, C) = \frac{1}{16}, \Pr(A, C) = \frac{1}{4}
+            $$
+            Choose the pair of words with the highest value of $PMI$.
+        """))
+
+    return Quiz(
+        description,
+        ["A and B", "B and C", "A and C", ],
+        "A and B"
+    )
+
+
 def quiz_bumps():
     # lesson 6, quiz 1
     from IPython.display import display
