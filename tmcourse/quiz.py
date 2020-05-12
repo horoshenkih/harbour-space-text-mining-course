@@ -399,6 +399,90 @@ def quiz_estimate_clustering_quality():
     )
 
 
+def quiz_nmf():
+    # lecture 3, quiz 3
+    import ipywidgets as widgets
+    from IPython.display import display
+
+    description = widgets.Output()
+    with description:
+        display(widgets.HTMLMath(value=r"""
+            Choose the correct NMF for the matrix
+            $$
+            X = \begin{pmatrix}
+                    1 & 2 \\
+                    2 & 4
+                \end{pmatrix}
+            $$
+            <ul>
+                <li> option 1:
+                    $$
+                    X =
+                    \begin{pmatrix}
+                        1 & 1\\
+                        1 & 1
+                    \end{pmatrix}
+                    \cdot
+
+                    \begin{pmatrix}
+                        1 & 2 \\
+                        2 & 4
+                    \end{pmatrix}
+                    $$
+                </li>
+                <li> option 2:
+                    $$
+                    X =
+                    \begin{pmatrix}
+                        1 & 0\\
+                        0 & 1
+                    \end{pmatrix}
+                    \cdot
+
+                    \begin{pmatrix}
+                        1 & 2 \\
+                        2 & 2
+                    \end{pmatrix}
+                    $$
+                </li>
+                <li> option 3:
+                    $$
+                    X =
+                    \begin{pmatrix}
+                        1 \\
+                        2 
+                    \end{pmatrix}
+                    \cdot
+
+                    \begin{pmatrix}
+                        1 & 2
+                    \end{pmatrix}
+                    $$
+                </li>
+
+                <li> option 4:
+                    $$
+                    X =
+                    \begin{pmatrix}
+                        1 & 2
+                    \end{pmatrix}
+                    \cdot
+
+                    \begin{pmatrix}
+                        1 \\
+                        2
+                    \end{pmatrix}
+                    $$
+                </li>
+            </ul>
+        """))
+    return Quiz(
+        description,
+        ["option 1", "option 2", "option 3", "option 4",],
+        "option 3"
+    )
+
+
 def quiz_bumps():
     # lesson 6, quiz 1
     from IPython.display import display
