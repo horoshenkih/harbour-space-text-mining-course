@@ -201,6 +201,56 @@ def demo_kmeans(
     return widgets.VBox([out_next_step, button, out])
 
 
+def demo_word2vec_batch(tokens, window_size):
+    # demo for lesson 4
+    import ipywidgets as widgets
+    from IPython.display import display, HTML
+
+    POS = 0
+
+    out = widgets.Output()
+
+    def visualize():
+        with out:
+            out.clear_output()
+            left_border = max(0, POS - window_size)
+            right_border = min(len(tokens), POS + window_size + 1)
+            center = tokens[POS]
+            left_tail = tokens[:left_border]
+            left_context = tokens[left_border:POS]
+            right_context = tokens[POS + 1:right_border]
+            right_tail = tokens[right_border:]
+            tokens_html = " ".join([
+                " ".join(left_tail),
+                "<span style='border: 2px solid red;'>" + " ".join(left_context) + "</span>",
+                "<span style='border: 2px solid green;'>" + center + "</span>",
+                "<span style='border: 2px solid red;'>" + " ".join(right_context) + "</span>",
+                " ".join(right_tail)
+            ])
+            display(HTML(tokens_html))
+            print("Training batch:", (center, left_context + right_context))
+
+    button_next = widgets.Button(description=">>")
+
+    def inc(b):
+        nonlocal POS
+        if POS < len(tokens) - 1:
+            POS += 1
+        visualize()
+    button_next.on_click(inc)
+    button_prev = widgets.Button(description="<<")
+
+    def dec(b):
+        nonlocal POS
+        if POS > 0:
+            POS -= 1
+        visualize()
+    button_prev.on_click(dec)
+
+    visualize()
+    return widgets.VBox([widgets.HBox([button_prev, button_next]), out])
+
+
 def demo_function_approximation(
         num_functions=1,
         default_transform="step",
