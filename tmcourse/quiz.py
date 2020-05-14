@@ -509,6 +509,41 @@ def quiz_coherence():
     )
 
 
+def quiz_skibidi():
+    # lesson 4, quiz 1
+    # https://www.thisworddoesnotexist.com/w/skibidi/eyJ3IjogInNraWJpZGkiLCAiZCI6ICJhIHRhbGwsIHNsZW5kZXIsIHRhcGVyaW5nLCBicm9hZC1zaG91bGRlcmVkIGZpc2ggb2Ygd2FybSBzZWFzLiIsICJwIjogIm5vdW4iLCAiZSI6ICJhIHNraWJpZGkgaXMgY2F1Z2h0IG91dCBvZiB0aGUgc2VhIGF0IENocmlzdG1hcyJ9.EvCkp3VeiAeCzKO1ZokB96-k4Cn5VOwxTvLz11foBk8=
+
+    import ipywidgets as widgets
+    from IPython.display import display
+
+    description = widgets.Output()
+    with description:
+        display(widgets.HTML("""
+            Consider the following sentence:
+            "a skibidi is caught out of the sea at Christmas".
+            
+            What is "skibidi"?
+            <ol>
+                <li>the Chinese tea used to purify tea glasses for eye makeup and to make it more attractive</li>
+                <li>a small, slender elongated tubular labyrinth, typically having a rounded body and a spiral, twisted, curved part</li>
+                <li>a tall, slender, tapering, broad-shouldered fish of warm seas.</li>
+                <li>the stem of the long rib of a fungus, especially one which reveals the outer edge of the flower and can be found on the stalk of a variety of trees</li>
+            </ol>
+            Choose the correct answer below
+        """))
+
+    return Quiz(
+        description,
+        [
+            "definition 1",
+            "definition 2",
+            "definition 3",
+            "definition 4",
+        ],
+        "definition 3"
+    )
+
+
 def quiz_bumps():
     # lesson 6, quiz 1
     from IPython.display import display
