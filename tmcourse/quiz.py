@@ -667,6 +667,33 @@ def quiz_most_similar():
     )
 
 
+def quiz_earl():
+    # lecture 4, quiz 7
+    import ipywidgets as widgets
+    from IPython.display import display
+
+    description = widgets.Output()
+    with description:
+        display(widgets.HTML("""
+            Solve the following word analogy task:
+            $$
+            \overrightarrow{\mathrm{earl}} - \overrightarrow{\mathrm{man}} \\approx X - \overrightarrow{\mathrm{woman}}
+            $$
+            Use "glove-wiki-gigaword-100".
+        """))
+
+    return Quiz(
+        description,
+        [
+            'X = duchess',
+            'X = marquess',
+            'X = countess',
+            'X = baronet',
+        ],
+        'X = countess',
+    )
+
+
 def quiz_bumps():
     # lesson 6, quiz 1
     from IPython.display import display
