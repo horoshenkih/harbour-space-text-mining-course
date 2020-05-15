@@ -572,6 +572,54 @@ def quiz_word2vec_context():
     )
 
 
+def quiz_word2vec_word_vector():
+    # lesson 4, quiz 3
+    import ipywidgets as widgets
+    from IPython.display import display
+
+    description = widgets.Output()
+    with description:
+        display(widgets.HTML("""
+            word2vec algorithm learns two matrices: the matrix of central vectors and the matrix of context vectors.
+            In the implementation above, how is the word vector computed for a given word?
+        """))
+
+    return Quiz(
+        description,
+        [
+            "Taken from the matrix of context vectors",
+            "Taken from the matrix of central vectors",
+            "It is the average of central and context vectors",
+            "None of the above",
+        ],
+        "Taken from the matrix of central vectors",
+    )
+
+
+def quiz_word2vec_subsampling():
+    # lesson 4, quiz 4
+
+    import ipywidgets as widgets
+    from IPython.display import display
+
+    description = widgets.Output()
+    with description:
+        display(widgets.HTML("""
+            In the implementation above, which words are subsampled (i.e. too frequent words are thrown away with some probability)?
+        """))
+
+    return Quiz(
+        description,
+        [
+            "Central words",
+            "Context words",
+            "Negative samples",
+            "All of them",
+        ],
+        "Central words",
+    )
+
+
 def quiz_bumps():
     # lesson 6, quiz 1
     from IPython.display import display
