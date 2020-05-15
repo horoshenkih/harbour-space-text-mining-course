@@ -659,8 +659,8 @@ def quiz_most_similar():
         description,
         [
             'instagram',
-            'facebook'
-            'youtube'
+            'facebook',
+            'youtube',
             'internet',
         ],
         "facebook",
