@@ -620,6 +620,30 @@ def quiz_word2vec_subsampling():
     )
 
 
+def quiz_word2vec_negative_sampling():
+    # lecture 4, quiz 5
+
+    import ipywidgets as widgets
+    from IPython.display import display
+
+    description = widgets.Output()
+    with description:
+        display(widgets.HTML("""
+            How is negative sampling performed? Why?
+        """))
+
+    return Quiz(
+        description,
+        [
+            "without replacement; negative samples are i.i.d.",
+            "with replacement; negative samples are i.i.d.",
+            "without replacement; it is efficient",
+            "with replacement; it is efficient",
+        ],
+        "with replacement; negative samples are i.i.d.",
+    )
+
+
 def quiz_bumps():
     # lesson 6, quiz 1
     from IPython.display import display
