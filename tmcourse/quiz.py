@@ -544,6 +544,34 @@ def quiz_skibidi():
     )
 
 
+def quiz_word2vec_context():
+    # lesson 4, quiz 2
+
+    import ipywidgets as widgets
+    from IPython.display import display
+
+    description = widgets.Output()
+    with description:
+        display(widgets.HTML("""
+            Choose the correct context for the word "quick" in the following sentence:
+            <br>
+            <it>the quick brown fox jumps over the lazy dog</it>
+            <br>
+            Window size is 2.
+        """))
+
+    return Quiz(
+        description,
+        [
+            "(the, brown)",
+            "(the, quick, brown, fox)",
+            "(the, brown, fox)",
+            "Cannot compute the context.",
+        ],
+        "(the, brown, fox)",
+    )
+
+
 def quiz_bumps():
     # lesson 6, quiz 1
     from IPython.display import display
