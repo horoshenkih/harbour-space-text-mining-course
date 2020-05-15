@@ -644,7 +644,7 @@ def quiz_word2vec_negative_sampling():
     )
 
 
-def quiz_glove_twitter_50_most_similar():
+def quiz_most_similar():
     # lecture 4, quiz 6
     import ipywidgets as widgets
     from IPython.display import display
@@ -652,7 +652,7 @@ def quiz_glove_twitter_50_most_similar():
     description = widgets.Output()
     with description:
         display(widgets.HTML("""
-            What is the most similar word to the word "twitter" according to the model "glove-twitter-50"?
+            What is the most similar word to the word "twitter" according to the model "glove-wiki-gigaword-100"?
         """))
 
     return Quiz(
@@ -660,7 +660,7 @@ def quiz_glove_twitter_50_most_similar():
         [
             'instagram',
             'facebook'
-            'fb'
+            'youtube'
             'internet',
         ],
         "facebook",
