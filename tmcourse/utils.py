@@ -134,18 +134,23 @@ def plot_confusion_matrix(target, prediction, normalize=None):
     plt.xlabel('predicted label')
 
 
+def _sample_words(model, words=None, sample=0):
+    import numpy as np
+    if words is None:
+        if sample > 0:
+            words = np.random.choice(list(model.vocab.keys()), sample)
+        else:
+            words = [word for word in model.vocab]
+    return [w for w in words if w in model.vocab]
+
+
 def display_pca_scatterplot(model, words=None, sample=0):
     # https://web.stanford.edu/class/archive/cs/cs224n/cs224n.1194/materials/Gensim%20word%20vector%20visualization.html
 
     from sklearn.decomposition import PCA
     import matplotlib.pyplot as plt
     import numpy as np
-    if words == None:
-        if sample > 0:
-            words = np.random.choice(list(model.vocab.keys()), sample)
-        else:
-            words = [word for word in model.vocab]
-
+    words = _sample_words(model, words=words, sample=sample)
     word_vectors = np.array([model[w] for w in words])
 
     twodim = PCA().fit_transform(word_vectors)[:, :2]
@@ -169,11 +174,7 @@ def display_pca_scatterplot_interactive(
     from bokeh.io import output_notebook
     output_notebook()
 
-    if words == None:
-        if sample > 0:
-            words = np.random.choice(list(model.vocab.keys()), sample)
-        else:
-            words = [ word for word in model.vocab ]
+    words = _sample_words(model, words=words, sample=sample)
 
     kwargs = {
         'token': words
