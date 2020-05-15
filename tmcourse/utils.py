@@ -132,3 +132,63 @@ def plot_confusion_matrix(target, prediction, normalize=None):
     sns.heatmap(mat, square=True, annot=True, fmt=fmt, cbar=False, cmap="coolwarm")
     plt.ylabel('true label')
     plt.xlabel('predicted label')
+
+
+def display_pca_scatterplot(model, words=None, sample=0):
+    # https://web.stanford.edu/class/archive/cs/cs224n/cs224n.1194/materials/Gensim%20word%20vector%20visualization.html
+
+    from sklearn.decomposition import PCA
+    import matplotlib.pyplot as plt
+    import numpy as np
+    if words == None:
+        if sample > 0:
+            words = np.random.choice(list(model.vocab.keys()), sample)
+        else:
+            words = [word for word in model.vocab]
+
+    word_vectors = np.array([model[w] for w in words])
+
+    twodim = PCA().fit_transform(word_vectors)[:, :2]
+
+    plt.figure(figsize=(6, 6))
+    plt.scatter(twodim[:, 0], twodim[:, 1], edgecolors='k', c='r')
+    for word, (x, y) in zip(words, twodim):
+        plt.text(x + 0.05, y + 0.05, word)
+
+
+def display_pca_scatterplot_interactive(
+    model, words=None, sample=0,
+    radius=10, alpha=0.25, color='blue', width=600, height=400, show=True):
+    # https://github.com/yandexdataschool/nlp_course/blob/2019/week01_embeddings/seminar.ipynb
+
+    """ draws an interactive plot for data points with auxilirary info on hover """
+    from sklearn.decomposition import PCA
+    import numpy as np
+
+    import bokeh.models as bm, bokeh.plotting as pl
+    from bokeh.io import output_notebook
+    output_notebook()
+
+    if words == None:
+        if sample > 0:
+            words = np.random.choice(list(model.vocab.keys()), sample)
+        else:
+            words = [ word for word in model.vocab ]
+
+    kwargs = {
+        'token': words
+    }
+    word_vectors = np.array([model[w] for w in words])
+
+    twodim = PCA().fit_transform(word_vectors)[:,:2]
+    x, y = twodim[:,0], twodim[:,1]
+
+    if isinstance(color, str): color = [color] * len(x)
+    data_source = bm.ColumnDataSource({ 'x' : x, 'y' : y, 'color': color, **kwargs })
+
+    fig = pl.figure(active_scroll='wheel_zoom', width=width, height=height)
+    fig.scatter('x', 'y', size=radius, color='color', alpha=alpha, source=data_source)
+
+    fig.add_tools(bm.HoverTool(tooltips=[(key, "@" + key) for key in kwargs.keys()]))
+    if show: pl.show(fig)
+    return fig
