@@ -9,6 +9,7 @@ def calendar_table(
         weights: tp.List[float],
         from_datetime: tp.Optional[tp.Union[date, datetime]] = None,
         to_datetime: tp.Optional[tp.Union[date, datetime]] = None,
+        font_size=20
 ) -> str:
     table_data = defaultdict(dict)
     sorted_weights = list(sorted(weights))
@@ -41,8 +42,12 @@ def calendar_table(
       padding: 8px;
       text-align: center;
       border-bottom: 1px solid #ddd;
+      font-size: {font_size};
     }
-    </style>"""
+    tr {
+      font-size: {font_size};
+    }
+    </style>""".format(font_size=font_size)
     html = style + '<table><tr>{}</tr><tr>{}</tr></table>'.format(
         ''.join(['<th>{}</th>'.format(h) for h in header]),
         '</tr><tr>'.join('<td>{}</td>'.format('</td><td>'.join(str(_) for _ in row)) for row in table)
