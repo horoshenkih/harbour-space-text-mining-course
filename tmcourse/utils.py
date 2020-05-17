@@ -55,9 +55,9 @@ def calendar_table(
     return html
 
 
-def visualize_term_counter(term_counter, start, title, shift=10):
+def visualize_term_counter(term_counter, start, title, shift=10, font_size=22):
     import matplotlib.pyplot as plt
-    plt.rcParams.update({'font.size': 22})
+    plt.rcParams.update({'font.size': font_size})
 
     plt.style.use('ggplot')
     plt.figure(figsize=(12, 8))
