@@ -41,7 +41,6 @@ def calendar_table(
       padding: 8px;
       text-align: center;
       border-bottom: 1px solid #ddd;
-      font-size: 20;
     }
     </style>"""
     html = style + '<table><tr>{}</tr><tr>{}</tr></table>'.format(
