@@ -38,15 +38,15 @@ def calendar_table(
     header = ["week", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
     table = [[k] + [table_data[k].get(i, "") for i in range(1, 8)] for k in sorted(table_data)]
     style = """<style>
-    th, td {
+    th, td {{
       padding: 8px;
       text-align: center;
       border-bottom: 1px solid #ddd;
       font-size: {font_size};
-    }
-    tr {
+    }}
+    tr {{
       font-size: {font_size};
-    }
+    }}
     </style>""".format(font_size=font_size)
     html = style + '<table><tr>{}</tr><tr>{}</tr></table>'.format(
         ''.join(['<th>{}</th>'.format(h) for h in header]),
