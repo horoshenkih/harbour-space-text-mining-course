@@ -123,7 +123,10 @@ def display_token_importance(token_importances):
     max_token_importance = max([ti[1] for ti in token_importances])
     html_tokens = []
     for token, importance in token_importances:
-        r = (importance - min_token_importance) / (max_token_importance - min_token_importance)
+        if max_token_importance == min_token_importance:
+            r = 0.5
+        else:
+            r = (importance - min_token_importance) / (max_token_importance - min_token_importance)
         color = "rgba(0, 0, 255, {})".format(0.8 * r + 0.2)
         html_tokens.append("<span style='color:{}'>{}</span>".format(color, token))
     display(HTML(" ".join(html_tokens)))
