@@ -203,3 +203,10 @@ def display_pca_scatterplot_interactive(
     fig.add_tools(bm.HoverTool(tooltips=[(key, "@" + key) for key in kwargs.keys()]))
     if show: pl.show(fig)
     return fig
+
+
+def show_vectorizer_largest_components(vectorizer, vectors, n_components=20):
+    from pprint import pprint
+    vocab = {i: v for v, i in vectorizer.vocabulary_.items()}
+    for center in vectors:
+        pprint([vocab[i] for i in center.argsort()[-n_components:]], compact=True)
