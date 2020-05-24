@@ -228,7 +228,9 @@ def demo_word2vec_batch(tokens, window_size):
                 " ".join(right_tail)
             ])
             display(HTML(tokens_html))
-            print("Training batch:", (center, left_context + right_context))
+            print(f"Position: {POS}")
+            print(f"Center word: '{center}'")
+            print(f"Context: {left_context + right_context}")
 
     button_next = widgets.Button(description=">>")
 
