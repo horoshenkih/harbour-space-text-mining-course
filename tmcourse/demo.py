@@ -592,7 +592,7 @@ def demo_computational_graph(
     return widgets.VBox([widgets.HBox([labels, dec_buttons, sliders, inc_buttons]), demo])
 
 
-def demo_universal_approximator(K=1):
+def demo_universal_approximator(K=1, font_size=12, node_size=400):
     connections = []
     labels = {}
     x = r"$x$"
@@ -624,7 +624,7 @@ def demo_universal_approximator(K=1):
         connections.append((w, w_times_g, w, r"$\dfrac{{\partial l}}{{\partial h}} \cdot g(a_{k}x+b_{k})$".format(k=k)))
         connections.append((w_times_g, sum_all, r"$w_{k} g(a_{k}x+b_{k})$".format(k=k), r"$\dfrac{{\partial l}}{{\partial h}}$".format(k=k)))
         connections.append((sum_all, loss, r"$\sum_k w_{k} g(a_{k}x+b_{k})\left[\equiv h(x)\right]$", r"$\dfrac{\partial l}{\partial h} \left[ = 2(y - h(x))\right]$"))
-    return demo_computational_graph(connections, labels, font_size=12, node_size=400)
+    return demo_computational_graph(connections, labels, font_size=font_size, node_size=node_size)
 
 
 def demo_pytorch_computational_graph(
