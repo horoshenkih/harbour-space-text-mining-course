@@ -751,6 +751,47 @@ def quiz_derivative():
     return Quiz(description, [1, 2, 3], 3)
 
 
+def quiz_correct_computational_graph():
+    # lecture 6, quiz 3
+    import ipywidgets as widgets
+    from IPython.display import display
+    description = widgets.Output()
+    with description:
+        display(widgets.HTMLMath(value=r"""
+        Choose the correct computational graph for $F(\alpha, \beta) = f\left(\dfrac{\alpha}{\beta}\right)$
+        """))
+    with description:
+        display(widgets.HTML(
+            """
+            <b>Option 1</b>
+            <br>
+            <img src="https://raw.githubusercontent.com/horoshenkih/harbour-space-text-mining-course/master/pic/backprop-1.png">
+            <br>
+
+            <b>Option 2</b>
+            <br>
+            <img src="https://raw.githubusercontent.com/horoshenkih/harbour-space-text-mining-course/master/pic/backprop-2.png">
+            <br>
+
+            <b>Option 3</b>
+            <br>
+            <img src="https://raw.githubusercontent.com/horoshenkih/harbour-space-text-mining-course/master/pic/backprop-3.png">
+            <br>
+
+            <b>Option 4</b>
+            <br>
+            <img src="https://raw.githubusercontent.com/horoshenkih/harbour-space-text-mining-course/master/pic/backprop-4.png">
+            <br>
+            """
+        ))
+
+    return Quiz(
+        description,
+        ["Option 1", "Option 2", "Option 3", "Option 4"],
+        "Option 4"
+    )
+
+
 def quiz_derivative_pytorch():
     from IPython.display import display
 
