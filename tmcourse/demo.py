@@ -592,6 +592,41 @@ def demo_computational_graph(
     return widgets.VBox([widgets.HBox([labels, dec_buttons, sliders, inc_buttons]), demo])
 
 
+def demo_universal_approximator(K=1, font_size=12, node_size=400):
+    connections = []
+    labels = {}
+    x = r"$x$"
+    sum_all = "++"
+    labels[sum_all] = r"$h(x)$"
+    loss = r"$l(y, h(x))$"
+    for k in range(1, K+1):
+        a = r"$a_{}$".format(k)
+        b = r"$b_{}$".format(k)
+        w = r"$w_{}$".format(k)
+        a_times_x = "a*x_"+str(k)
+        labels[a_times_x] = r"$\times$"  # the same label for many sum functions
+        b_times_1 = "b*1_"+str(k)
+        labels[b_times_1] = r"$\times$"  # the same label for many sum functions
+        ax_plus_b = "+"+str(k)
+        labels[ax_plus_b] = "+"  # the same label for many sum functions
+        g = "g"+str(k)
+        labels[g] = "g"
+        w_times_g = "w*g_"+str(k)
+        labels[w_times_g] = r"$\times$"  # the same label for many sum functions
+        connections.append((x, a_times_x, "x", r"$\dfrac{{\partial l}}{{\partial h}} \cdot w_{k} \cdot g'(ax_{k}+b_{k}) \cdot a_{k}$".format(k=k)))
+        connections.append((a, a_times_x, a, r"$\dfrac{{\partial l}}{{\partial h}} \cdot w_{k} \cdot g'(ax_{k}+b_{k}) \cdot x$".format(k=k) + " "*16))
+        connections.append(("1", b_times_1, "1", r"$\dfrac{{\partial l}}{{\partial h}} \cdot w_{k} \cdot g'(ax_{k}+b_{k}) \cdot b_{k}$".format(k=k)))
+        connections.append((b, b_times_1, b, r"$\dfrac{{\partial l}}{{\partial h}} \cdot w_{k} \cdot g'(ax_{k}+b_{k}) \cdot 1$".format(k=k) + " "*10))
+        connections.append((a_times_x, ax_plus_b, a + r"$\cdot$" + x, r"$\dfrac{{\partial l}}{{\partial h}} \cdot w_{k} \cdot g'(ax_{k}+b_{k})$".format(k=k)))
+        connections.append((b_times_1, ax_plus_b, b, r"$\dfrac{{\partial l}}{{\partial h}} \cdot w_{k} \cdot g'(ax_{k}+b_{k})$".format(k=k)))
+        connections.append((ax_plus_b, g, r"$a_{k}x+b_{k}$".format(k=k), r"$\dfrac{{\partial l}}{{\partial h}} \cdot w_{k} \cdot g'(ax_{k}+b_{k})$".format(k=k)))
+        connections.append((g, w_times_g, r"$g(a_{k}x+b_{k})$".format(k=k), r"$\dfrac{{\partial l}}{{\partial h}} \cdot w_{k}$".format(k=k)))
+        connections.append((w, w_times_g, w, r"$\dfrac{{\partial l}}{{\partial h}} \cdot g(a_{k}x+b_{k})$".format(k=k)))
+        connections.append((w_times_g, sum_all, r"$w_{k} g(a_{k}x+b_{k})$".format(k=k), r"$\dfrac{{\partial l}}{{\partial h}}$".format(k=k)))
+        connections.append((sum_all, loss, r"$\sum_k w_{k} g(a_{k}x+b_{k})\left[\equiv h(x)\right]$", r"$\dfrac{\partial l}{\partial h} \left[ = 2(y - h(x))\right]$"))
+    return demo_computational_graph(connections, labels, font_size=font_size, node_size=node_size)
+
+
 def demo_pytorch_computational_graph(
     t,
     init_gradient=None,
