@@ -1,5 +1,6 @@
 import numpy as np
 import random
+from tqdm import tqdm
 
 
 class Node2VecGraph():
@@ -44,7 +45,7 @@ class Node2VecGraph():
         walks = []
         nodes = list(G.nodes())
         # print('Walk iteration:')
-        for walk_iter in range(num_walks):
+        for walk_iter in tqdm(range(num_walks), desc='simulate_walks'):
             # print(str(walk_iter+1), '/', str(num_walks))
             random.shuffle(nodes)
             for node in nodes:
@@ -81,7 +82,7 @@ class Node2VecGraph():
         is_directed = self.is_directed
 
         alias_nodes = {}
-        for node in G.nodes():
+        for node in tqdm(G.nodes(), desc='preprocess_transition_probs'):
             unnormalized_probs = [G[node][nbr]['weight'] for nbr in sorted(G.neighbors(node))]
             norm_const = sum(unnormalized_probs)
             normalized_probs =  [float(u_prob)/norm_const for u_prob in unnormalized_probs]
