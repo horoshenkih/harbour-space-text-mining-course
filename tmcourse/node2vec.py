@@ -82,7 +82,7 @@ class Node2VecGraph():
         is_directed = self.is_directed
 
         alias_nodes = {}
-        for node in tqdm(G.nodes(), desc='preprocess_transition_probs'):
+        for node in G.nodes():
             unnormalized_probs = [G[node][nbr]['weight'] for nbr in sorted(G.neighbors(node))]
             norm_const = sum(unnormalized_probs)
             normalized_probs =  [float(u_prob)/norm_const for u_prob in unnormalized_probs]
@@ -92,10 +92,10 @@ class Node2VecGraph():
         triads = {}
 
         if is_directed:
-            for edge in G.edges():
+            for edge in tqdm(G.edges(), desc='alias_edges'):
                 alias_edges[edge] = self.get_alias_edge(edge[0], edge[1])
         else:
-            for edge in G.edges():
+            for edge in tqdm(G.edges(), desc='alias_edges'):
                 alias_edges[edge] = self.get_alias_edge(edge[0], edge[1])
                 alias_edges[(edge[1], edge[0])] = self.get_alias_edge(edge[1], edge[0])
 
