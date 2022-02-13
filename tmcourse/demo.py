@@ -445,7 +445,7 @@ def demo_computational_graph(
     # each connection is a tuple (src, dst, forward, backward)
     # labels is a dict with mapping (node, label)
     import matplotlib.pyplot as plt
-    from networkx import nx
+    import networkx as nx
     import ipywidgets as widgets
     import math
     import numpy as np
