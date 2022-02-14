@@ -5,4 +5,4 @@ gdown==3.10.1
 gensim==3.8.1
 requests==2.22.0
 bs4==0.0.1
-numpy==1.18.1
+numpy==1.22.2
