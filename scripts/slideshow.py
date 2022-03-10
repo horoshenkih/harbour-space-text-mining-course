@@ -43,6 +43,7 @@ def main():
     with open(args.ipynb_notebook_file) as nb, FakeSysArgv(), tempfile.NamedTemporaryFile(suffix=".ipynb", mode="w") as out_nb:
         nb_content = json.load(nb)
         for i, cell in enumerate(nb_content["cells"]):
+            # breakpoint()
             nb_content["cells"][i].setdefault("metadata", {})
             nb_content["cells"][i]["metadata"].setdefault("slideshow", {})
             nb_content["cells"][i]["metadata"].setdefault("tags", [])
