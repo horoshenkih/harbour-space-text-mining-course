@@ -654,7 +654,7 @@ def demo_pytorch_computational_graph(
                 n_id = str(id(n[0])) + n[0].name()
                 node_labels[n_id] = f'"{n[0].name()}"'
                 G_forward.add_edge(n_id, node_id)
-                G.add_edge(node_id, n_id, label=n_outer_gradient.item())
+                G.add_edge(node_id, n_id, label=f'"{n_outer_gradient.item()}"')
                 stack.append((n[0], n[0](n_outer_gradient)))
     # place nodes left-to-right
     # "regular" top-to-bottom layout
