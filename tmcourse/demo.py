@@ -648,13 +648,13 @@ def demo_pytorch_computational_graph(
     while stack:
         node, outer_gradient = stack.pop()
         node_id = str(id(node)) + node.name()
-        node_labels[node_id] = f'"{node.name()}"'
+        node_labels[node_id] = node.name()
         for n, n_outer_gradient in zip(node.next_functions, outer_gradient):
             if n[0] is not None:
                 n_id = str(id(n[0])) + n[0].name()
-                node_labels[n_id] = f'"{n[0].name()}"'
+                node_labels[n_id] = n[0].name()
                 G_forward.add_edge(n_id, node_id)
-                G.add_edge(node_id, n_id, label=f'"{n_outer_gradient.item()}"')
+                G.add_edge(node_id, n_id, label=n_outer_gradient.item())
                 stack.append((n[0], n[0](n_outer_gradient)))
     # place nodes left-to-right
     # "regular" top-to-bottom layout
@@ -673,6 +673,7 @@ def demo_pytorch_computational_graph(
     plt.ylim(y_min - padding, y_max + padding)
     # draw nodes
     nx.draw_networkx_nodes(G, node_color="#a2c4fc", pos=nodes_layout)
+    node_labels = {i: n.split(":")[-1] for i, n in node_labels.items()}  # fix pydot issue
     nx.draw_networkx_labels(G, pos=nodes_layout, labels=node_labels)
     # draw edges
     for e in G.edges:
