@@ -647,11 +647,11 @@ def demo_pytorch_computational_graph(
     node_labels = {}
     while stack:
         node, outer_gradient = stack.pop()
-        node_id = str(id(node)) + node.name()
+        node_id = str(id(node)) + node.name().split(":")[-1]
         node_labels[node_id] = node.name()
         for n, n_outer_gradient in zip(node.next_functions, outer_gradient):
             if n[0] is not None:
-                n_id = str(id(n[0])) + n[0].name()
+                n_id = str(id(n[0])) + n[0].name().split(":")[-1]
                 node_labels[n_id] = n[0].name()
                 G_forward.add_edge(n_id, node_id)
                 G.add_edge(node_id, n_id, label=n_outer_gradient.item())
