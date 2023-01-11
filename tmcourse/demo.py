@@ -648,7 +648,7 @@ def demo_pytorch_computational_graph(
     while stack:
         node, outer_gradient = stack.pop()
         node_id = str(id(node)) + node.name()
-        node_labels[node_id] = node.name()
+        node_labels[node_id] = f'"{node.name()}"'
         for n, n_outer_gradient in zip(node.next_functions, outer_gradient):
             if n[0] is not None:
                 n_id = str(id(n[0])) + n[0].name()
