@@ -27,7 +27,7 @@ def quiz_count_lemmas():
     # lesson 1, quiz 2
     def etalon(s):
         import spacy
-        nlp = spacy.load("en")
+        nlp = spacy.load("en_core_web_sm")
         return len({t.lemma_ for t in nlp(s)})
 
     return Function(
@@ -54,7 +54,7 @@ def quiz_ner():
     # lesson 1, quiz 3
     def etalon(s):
         import spacy
-        nlp = spacy.load("en")
+        nlp = spacy.load("en_core_web_sm")
         return set(ent.label_ for ent in nlp(s).ents)
 
     return Function(
